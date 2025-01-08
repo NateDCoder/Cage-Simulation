@@ -18,6 +18,7 @@ const CHAIN_LENGTH = (60 * SCALE) - (CAGE_HEIGHT + FLOOR_DISTANCE);
 var chainSlider, cageSlider, robotSlider, robotContactSlider;
 
 let gravity = false;
+//update plz
 
 // Grab the button element
 const gravityButton = document.getElementById('gravity');
