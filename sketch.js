@@ -16,6 +16,17 @@ const FLOOR_LOCATION = 60 * SCALE;
 
 const CHAIN_LENGTH = (60 * SCALE) - (CAGE_HEIGHT + FLOOR_DISTANCE);
 var chainSlider, cageSlider, robotSlider, robotContactSlider;
+
+let gravity = false;
+
+// Grab the button element
+const gravityButton = document.getElementById('gravity');
+
+// Add an event listener to set the flag when the button is clicked
+gravityButton.addEventListener('click', () => {
+    gravity = !gravity;
+});
+
 function setup() {
     createP('Chain Angle:').position(10, 0);
     createP('Cage Angle:').position(10, 40);
@@ -154,7 +165,7 @@ function draw() {
 
     // const result = weightedAverage + additionalTerm;
 
-    console.log(totalCenterMass.y, totalCenterMassY)
+    // console.log(totalCenterMass.y, totalCenterMassY)
 
     // Components
     const chainComponent = CHAIN_LENGTH * Math.cos(chainAngle);
@@ -197,12 +208,14 @@ function draw() {
     const dResult_dCageAngle =
         (dCombinedTerm_dCageAngle * 0.5) * 0.826 +
         0.174 * dChainComponent_dCageAngle + 0.087 * dHeightComponent_dCageAngle;
-    cageSlider.value(cageSlider.value() + dResult_dCageAngle * 0.1);
-    chainSlider.value(chainSlider.value() + dResult_dChainAngle * 0.1);
+    if (gravity) {
+        cageSlider.value(cageSlider.value() + dResult_dCageAngle * 0.1);
+        chainSlider.value(chainSlider.value() + dResult_dChainAngle * 0.1);
+    }
     // Output derivatives
     // console.log("Derivative w.r.t. chainAngle:", dResult_dChainAngle);
     // console.log("Derivative w.r.t. cageAngle:", dResult_dCageAngle);
-    
+
     // robotCenterOfMass.y = (((CHAIN_LENGTH * Math.cos(chainAngle) +
     //     CAGE_WIDTH / 2 * Math.sin(cageAngle + chainAngle)) * (1 - robotContactPoint) +
     //     ((CHAIN_LENGTH * Math.cos(chainAngle) + CAGE_WIDTH / 2 * Math.sin(cageAngle + chainAngle)) +
